@@ -1,6 +1,6 @@
 import { map } from 'rxjs';
 
-import { percent, Responsive, type UiChild } from 'gesso-core';
+import { percent, Responsive, type UiChild, type UiNode } from 'gesso-core';
 import type { Inputs } from 'gesso-framework';
 
 import { Avatar } from './Avatar';
@@ -19,9 +19,11 @@ type Place = 'inbox' | 'assigned' | 'waiting' | 'resolved' | 'settings';
  * Harbor around a screen: the sidebar from a tablet up, and the tab
  * bar on a phone. `current` is the place the screen is, which the
  * sidebar and the tab bar show as selected; the screen goes inside.
+ * `navRef` hears the places' node, for a tour to point at.
  */
-export function AppShell(inputs: Inputs<{ current: Place; children?: UiChild }>): UiChild {
+export function AppShell(inputs: Inputs<{ current: Place; navRef?: (node: UiNode | null) => void; children?: UiChild }>): UiChild {
   const at = (place: Place) => inputs.current.pipe(map(current => current === place));
+  const nav = (node: UiNode | null) => inputs.navRef.emit(node);
   const content = (
     <column flex={1} minWidth={0} minHeight={0} backgroundColor="background">
       {inputs.children.pipe(map(child => child ?? []))}
@@ -40,7 +42,7 @@ export function AppShell(inputs: Inputs<{ current: Place; children?: UiChild }>)
               <text text="Support" textStyle="bodySmall" color="textMuted" />
             </column>
           </row>
-          <column gap={2}>
+          <column ref={nav} gap={2}>
             <NavItem label="Inbox" icon={INBOX} count={4} selected={at('inbox')} />
             <NavItem label="Assigned to me" icon={ASSIGNED} count={2} selected={at('assigned')} />
             <NavItem label="Waiting" icon={WAITING} count={3} selected={at('waiting')} />
@@ -72,7 +74,7 @@ export function AppShell(inputs: Inputs<{ current: Place; children?: UiChild }>)
       <column width={percent(100)} height={percent(100)}>
         {content}
         <box height={1} backgroundColor="border" />
-        <row paddingX={8} paddingTop={4} paddingBottom={24} gap={4} backgroundColor="background">
+        <row ref={nav} paddingX={8} paddingTop={4} paddingBottom={24} gap={4} backgroundColor="background">
           <NavItem label="Inbox" icon={INBOX} placement="tabBar" selected={at('inbox')} />
           <NavItem label="Mine" icon={ASSIGNED} placement="tabBar" selected={at('assigned')} />
           <NavItem label="Waiting" icon={WAITING} placement="tabBar" selected={at('waiting')} />

@@ -15,9 +15,10 @@ const NEW = new URL('../assets/icons/mail.svg', import.meta.url).href;
  * The inbox's list: its header, search, and every conversation, newest
  * first. The inbox draws it alone on a phone and a tablet, and beside
  * the open conversation on a desktop. `selected` is the customer whose
- * conversation is open, which shows as read.
+ * conversation is open, which shows as read. `compact` draws each
+ * conversation on one line.
  */
-export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
+export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean }>): UiChild {
   const open = (name: string) => inputs.selected.pipe(map(selected => selected === name));
   return (
     <column width={percent(100)} height={percent(100)}>
@@ -35,6 +36,7 @@ export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
             status={open('Maya Ferreira').pipe(map(opened => (opened ? ('open' as const) : ('new' as const))))}
             tag="Orders"
             unread={open('Maya Ferreira').pipe(map(opened => !opened))}
+            compact={inputs.compact}
             selected={open('Maya Ferreira')}
           />
           <ConversationRow
@@ -45,6 +47,7 @@ export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
             status="new"
             tag="Classes"
             unread={true}
+            compact={inputs.compact}
             selected={open('Theo Lindqvist')}
           />
           <ConversationRow
@@ -54,6 +57,7 @@ export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
             time="Yesterday"
             status="open"
             tag="Wholesale"
+            compact={inputs.compact}
             selected={open('Priya Raman')}
           />
           <ConversationRow
@@ -63,6 +67,7 @@ export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
             time="Yesterday"
             status="waiting"
             tag="Orders"
+            compact={inputs.compact}
             selected={open('Jonah Adeyemi')}
           />
           <ConversationRow
@@ -72,6 +77,7 @@ export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
             time="Mon"
             status="resolved"
             tag="Classes"
+            compact={inputs.compact}
             selected={open('Sofia Marchetti')}
           />
           <ConversationRow
@@ -81,6 +87,7 @@ export function InboxList(inputs: Inputs<{ selected?: string }>): UiChild {
             time="Oct 28"
             status="resolved"
             tag="Orders"
+            compact={inputs.compact}
             selected={open('Kenji Watanabe')}
           />
         </column>

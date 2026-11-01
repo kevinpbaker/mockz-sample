@@ -1,0 +1,17 @@
+{
+  "id": "nharbor-assign",
+  "by": "Lena Park",
+  "at": 1793519621892,
+  "text": "New conversations go to the next person who is online (Settings, Share new conversations). Anyone on the team can change it here.",
+  "file": "mocks/Inbox/Conversation.tsx",
+  "screen": "Conversation",
+  "anchor": {
+    "owners": [
+      "mocks/Inbox/Conversation.tsx:69:5",
+      "mocks/Inbox/Conversation.tsx:37:9"
+    ],
+    "source": "components/AssignMenu.tsx:86:7",
+    "index": 0,
+    "label": "AssignMenu \"Sam Okoro\""
+  }
+}

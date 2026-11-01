@@ -33,6 +33,17 @@ export const ConversationRow = {
       selected={true}
     />
   ),
+  Compact: (
+    <C.ConversationRow
+      name="Theo Lindqvist"
+      subject="Move my Saturday wheel class"
+      preview="I cannot come to the 10:00 class on the 14th. Is there space at 14:00?"
+      time="9:12 AM"
+      status="new"
+      unread={true}
+      compact={true}
+    />
+  ),
   Resolved: (
     <C.ConversationRow
       name="Sofia Marchetti"

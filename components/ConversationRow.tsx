@@ -22,7 +22,8 @@ const RING = focusRing();
  * One conversation in the inbox: who wrote, when, the subject and the
  * start of the last message, its status and its tag. `unread` sets the
  * name and subject in bold with a dot; `selected` is the one open
- * beside the list. A press opens it.
+ * beside the list. `compact` is one line a conversation: name, subject
+ * and status. A press opens it.
  */
 export function ConversationRow(
   inputs: Inputs<{
@@ -34,11 +35,13 @@ export function ConversationRow(
     tag?: string;
     unread?: boolean;
     selected?: boolean;
+    compact?: boolean;
     onPress?: () => void;
   }>
 ): UiChild {
   const unread = inputs.unread.pipe(map(unread => unread === true));
   const strong = unread.pipe(map(bold => (bold ? 'bodyStrong' : 'body')));
+  const compact = inputs.compact.pipe(map(compact => compact === true));
   const press = () => inputs.onPress.emit();
   return (
     <row
@@ -56,11 +59,12 @@ export function ConversationRow(
       states={inputs.selected.pipe(map(selected => (selected === true ? ['selected' as const] : [])))}
       gap={12}
       paddingX={12}
-      paddingY={12}
+      paddingY={compact.pipe(map(one => (one ? 8 : 12)))}
+      y={compact.pipe(map(one => (one ? 'center' : 'start')))}
       borderRadius="medium"
       backgroundColor={inputs.selected.pipe(map(selected => (selected === true ? 'selectionBackground' : undefined)))}>
       <box position="relative" flexShrink={0}>
-        <Avatar name={inputs.name} />
+        <Avatar name={inputs.name} size={compact.pipe(map(one => (one ? 'small' : 'medium')))} />
         <box
           position="absolute"
           top={-2}
@@ -74,29 +78,44 @@ export function ConversationRow(
           visible={unread}
         />
       </box>
-      <column gap={2} flex={1} minWidth={0}>
-        <row gap={8} y="center">
-          <text text={inputs.name} textStyle={strong} flex={1} minWidth={0} maxLines={1} textOverflow="ellipsis" />
-          <text text={inputs.time} textStyle="bodySmall" color="textMuted" textWrap="none" />
-        </row>
-        <text text={inputs.subject} textStyle={strong} maxLines={1} textOverflow="ellipsis" />
-        <text text={inputs.preview} textStyle="bodySmall" color="textMuted" maxLines={1} textOverflow="ellipsis" />
-        <row gap={8} y="center" paddingTop={4}>
-          <StatusPill status={inputs.status} />
-          {inputs.tag.pipe(
-            map(tag =>
-              tag === undefined
-                ? []
-                : [
-                    <row key="tag" gap={4} y="center" color="textMuted">
-                      <Icon src={TAG} />
-                      <text text={tag} textStyle="label" color="textMuted" />
-                    </row>
-                  ]
-            )
-          )}
-        </row>
-      </column>
+      {compact.pipe(
+        map(one =>
+          one
+            ? [
+                <row key="line" gap={12} y="center" flex={1} minWidth={0}>
+                  <text text={inputs.name} textStyle={strong} width={144} flexShrink={0} maxLines={1} textOverflow="ellipsis" />
+                  <text text={inputs.subject} textStyle={strong} flex={1} minWidth={0} maxLines={1} textOverflow="ellipsis" />
+                  <StatusPill status={inputs.status} />
+                  <text text={inputs.time} textStyle="bodySmall" color="textMuted" textWrap="none" width={64} textAlign="end" />
+                </row>
+              ]
+            : [
+                <column key="card" gap={2} flex={1} minWidth={0}>
+                  <row gap={8} y="center">
+                    <text text={inputs.name} textStyle={strong} flex={1} minWidth={0} maxLines={1} textOverflow="ellipsis" />
+                    <text text={inputs.time} textStyle="bodySmall" color="textMuted" textWrap="none" />
+                  </row>
+                  <text text={inputs.subject} textStyle={strong} maxLines={1} textOverflow="ellipsis" />
+                  <text text={inputs.preview} textStyle="bodySmall" color="textMuted" maxLines={1} textOverflow="ellipsis" />
+                  <row gap={8} y="center" paddingTop={4}>
+                    <StatusPill status={inputs.status} />
+                    {inputs.tag.pipe(
+                      map(tag =>
+                        tag === undefined
+                          ? []
+                          : [
+                              <row key="tag" gap={4} y="center" color="textMuted">
+                                <Icon src={TAG} />
+                                <text text={tag} textStyle="label" color="textMuted" />
+                              </row>
+                            ]
+                      )
+                    )}
+                  </row>
+                </column>
+              ]
+        )
+      )}
     </row>
   );
 }

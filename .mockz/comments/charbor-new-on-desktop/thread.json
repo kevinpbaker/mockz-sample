@@ -1,0 +1,13 @@
+{
+  "id": "charbor-new-on-desktop",
+  "by": "Lena Park",
+  "at": 1793509290508,
+  "text": "@Sam Okoro On a desktop, should New open a full page, or a panel beside the list like a conversation does?",
+  "file": "mocks/Inbox/Inbox.tsx",
+  "screen": "Inbox",
+  "frame": "Desktop",
+  "pin": {
+    "x": 604,
+    "y": 49
+  }
+}

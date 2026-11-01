@@ -1,0 +1,18 @@
+{
+  "id": "nharbor-send",
+  "by": "Lena Park",
+  "at": 1793519021892,
+  "text": "Send stays off until the reply has text. After Send, the status changes to Waiting until the customer answers.",
+  "file": "mocks/Inbox/Conversation.tsx",
+  "screen": "Conversation",
+  "anchor": {
+    "owners": [
+      "mocks/Inbox/Conversation.tsx:69:5",
+      "mocks/Inbox/Conversation.tsx:64:9",
+      "components/ReplyBox.tsx:36:9"
+    ],
+    "source": "components/Button.tsx:53:9",
+    "index": 0,
+    "label": "Button \"Send\""
+  }
+}

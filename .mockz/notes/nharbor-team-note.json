@@ -1,0 +1,18 @@
+{
+  "id": "nharbor-team-note",
+  "by": "Lena Park",
+  "at": 1793518421892,
+  "text": "A team note never goes to the customer. It is not in the email, and the customer does not see it in their history.",
+  "file": "mocks/Inbox/Conversation.tsx",
+  "screen": "Conversation",
+  "anchor": {
+    "owners": [
+      "mocks/Inbox/Conversation.tsx:69:5",
+      "mocks/Inbox/Conversation.tsx:41:7",
+      "mocks/Inbox/Conversation.tsx:60:11"
+    ],
+    "source": "components/Message.tsx:22:5",
+    "index": 0,
+    "label": "Message \"Lena Park\""
+  }
+}

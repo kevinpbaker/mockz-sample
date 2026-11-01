@@ -3,15 +3,16 @@ import { ScrollArea } from 'gesso-components';
 import { bind, sharedValue, type ComponentContext } from 'gesso-framework';
 
 import { AppShell } from '../../components/AppShell';
+import { AssignMenu } from '../../components/AssignMenu';
 import { Button } from '../../components/Button';
 import { Icon } from '../../components/Icon';
 import { InboxList } from '../../components/InboxList';
 import { Message } from '../../components/Message';
 import { ReplyBox } from '../../components/ReplyBox';
+import { ResolveButton } from '../../components/ResolveButton';
 import { StatusPill } from '../../components/StatusPill';
 
 const BACK = new URL('../../assets/icons/arrow-left.svg', import.meta.url).href;
-const DONE = new URL('../../assets/icons/check.svg', import.meta.url).href;
 const ORDER = new URL('../../assets/icons/package.svg', import.meta.url).href;
 
 /**
@@ -30,8 +31,11 @@ export function Conversation(_inputs: unknown, ctx: ComponentContext) {
           <text text="Order #4821 arrived with a chipped rim" textStyle="title" maxLines={2} textOverflow="ellipsis" />
           <text text="Maya Ferreira · maya.ferreira@example.com" textStyle="bodySmall" color="textMuted" maxLines={1} textOverflow="ellipsis" />
         </column>
+        <ResolveButton customer="Maya Ferreira" iconOnly={withBack} />
+      </row>
+      <row gap={8} y="center" paddingX={16} paddingBottom={12}>
+        <AssignMenu defaultValue="Sam Okoro" />
         <StatusPill status="open" />
-        <Button label="Mark resolved" icon={DONE} iconOnly={withBack} variant="secondary" size="small" />
       </row>
       <box height={1} backgroundColor="border" />
       <ScrollArea flex={1} minHeight={0} padding={16}>

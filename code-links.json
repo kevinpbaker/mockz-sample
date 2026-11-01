@@ -1,0 +1,24 @@
+{
+  "components/Avatar.tsx#Avatar": {
+    "name": "Avatar",
+    "from": "@juniper/harbor-ui",
+    "file": "src/components/Avatar.tsx"
+  },
+  "components/Button.tsx#Button": {
+    "name": "Button",
+    "from": "@juniper/harbor-ui",
+    "file": "src/components/Button.tsx",
+    "props": { "variant": "kind", "onPress": "onClick" }
+  },
+  "components/StatusPill.tsx#StatusPill": {
+    "name": "StatusBadge",
+    "from": "@juniper/harbor-ui",
+    "file": "src/components/StatusBadge.tsx"
+  },
+  "components/Toggle.tsx#Toggle": {
+    "name": "Switch",
+    "from": "@juniper/harbor-ui",
+    "file": "src/components/Switch.tsx",
+    "props": { "on": "checked", "onChange": "onCheckedChange" }
+  }
+}

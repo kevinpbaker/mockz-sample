@@ -2,9 +2,10 @@
 
 A sample design for [Mockz](https://design.mockz.app): **Harbor**, a shared
 inbox for the support team of Juniper Ceramics, a small pottery shop. It
-has three screens, two states, one flow and sixteen components, in light
-and dark, at phone, tablet and desktop size. Everything is written as
-Gesso TSX, which is code your developers can read.
+has four screens with eight states, two flows, a direction and nineteen
+components, in light and dark, at phone, tablet and desktop size. The
+team's notes, comments and statuses come with it. Everything is written
+as Gesso TSX, which is code your developers can read.
 
 ![Harbor's inbox and conversation on a desktop, and three phone screens](.github/preview.png)
 
@@ -22,15 +23,26 @@ Gesso TSX, which is code your developers can read.
 
 ## Try this first
 
-1. **Play the flow.** In the screens tree, open Inbox › Reply to a customer
-   and press Play. Open Maya's conversation, write a reply and press Send.
-   The next screen shows what you wrote.
-2. **Switch to dark.** Use Light and Dark on the frames. Every color comes
-   from the theme, so the whole design changes.
-3. **Look at the Components page.** Each component shows each of its
+1. **Play the flows.** In the screens tree, open Inbox › Reply to a
+   customer and press Play. Open Maya's conversation, write a reply and
+   press Send: the next screen shows what you wrote. Then play Start a
+   conversation and type a name with no `@` in To: Send takes you back
+   with an error. Correct it, and Send goes on.
+2. **Open the menus.** In Play, press Sam Okoro to assign the
+   conversation, or Mark resolved to see the dialog. On the board, the
+   `assigning` and `resolving` states show them open.
+3. **Take the tour.** The Inbox's `tour` state is what a new teammate
+   sees first. `tour-places` is its second step.
+4. **Read the team's work.** Statuses color the sections of the board.
+   Notes are on the Conversation screen, and a comment thread is on the
+   Inbox at desktop size.
+5. **Compare a direction.** `compact` under the Inbox is a one-line list
+   to keep or drop.
+6. **Look at the Components page.** Each component shows each of its
    states, and Mockz adds hover, pressed and focused.
-4. **Change the brand.** In `theme.ts`, change `primary` from `#2E5E4E`
-   to a color you like. All screens and components change.
+7. **Change the brand.** In `theme.ts`, change `primary` from `#2E5E4E`
+   to a color you like, and switch to dark. All screens and components
+   change.
 
 ## What is in it
 
@@ -39,8 +51,11 @@ Gesso TSX, which is code your developers can read.
 | `theme.ts` | The design system: colors (light and dark), the type scale in Inter, radii, shadows, control sizes for a mouse and a finger, and the timing of motion. |
 | `fonts/` | Inter, in four weights. |
 | `components/` | The parts the screens are made of. Each `.examples.tsx` file gives a component's states for the Components page. |
-| `mocks/Inbox/` | The inbox, its empty state, a conversation, the conversation after a reply, and the flow that connects them (`flows.ts`). |
+| `mocks/Inbox/` | The inbox (empty, and on tour), a conversation (assigning, resolving, after a reply), a new conversation (with an error, and sent), and the two flows that connect them (`flows.ts`). |
 | `mocks/Settings.tsx` | Your profile, notifications and assignment settings. |
+| `variations/Inbox/` | A direction for the inbox, `compact`. |
+| `.mockz/` | The team's statuses, notes and comments. Mockz keeps them in the repository, so they travel with the design. |
+| `code-links.json` | Where four of the components are built in the team's code, for Develop mode. |
 | `assets/icons/` | Icons from [Lucide](https://lucide.dev). |
 
 ### Components
@@ -48,6 +63,7 @@ Gesso TSX, which is code your developers can read.
 | Component | What it is for |
 | --- | --- |
 | `AppShell` | The sidebar from a tablet up, and the tab bar on a phone. |
+| `AssignMenu` | Who a conversation is assigned to, and a popover to change it. |
 | `Avatar` | A person's initials in a circle. |
 | `Button` | Primary, secondary and quiet buttons, with an icon or without. |
 | `Card` | A group of related rows, with a title. |
@@ -59,9 +75,11 @@ Gesso TSX, which is code your developers can read.
 | `NavItem` | A place in the app, in the sidebar or in the tab bar. |
 | `PageHeader` | The title of a screen, with room for a back button and actions. |
 | `ReplyBox` | Where the team writes a reply. |
+| `ResolveButton` | Mark resolved, and the dialog that makes sure. |
 | `SearchField` | A field to find a conversation. |
 | `SettingsRow` | One setting and its control. |
 | `StatusPill` | New, open, waiting or resolved. |
+| `TextField` | A labeled field, with an error. |
 | `Toggle` | An on and off switch. |
 
 ## How it is written
@@ -82,6 +100,15 @@ Use this sample as a model for your own design:
   'press' }}`. `theme.ts` sets how long `press` is.
 - **States are inputs.** A selected row is `<ConversationRow selected={true} />`.
   A screen does not draw a state by hand.
+- **Moments are not copies.** A state that is only a moment of a screen,
+  such as a menu open or a tour's second step, starts the screen from the
+  inputs that make it, with `StartingInputs`.
+- **Overlays are Gesso's.** The popover, the dialog and the tour use
+  Gesso's `Popover`, `Dialog` and `Tour`. Mockz draws them in their frame,
+  on the board and in Play.
+- **Values a flow carries.** The reply and the To address are shared
+  values (`sharedValue`), so a later screen shows what was typed, and a
+  flow can branch on it.
 
 All the people, the shop and the text in this design are made up.
 Inter is under the [SIL Open Font License](fonts/Inter/OFL.txt), and
