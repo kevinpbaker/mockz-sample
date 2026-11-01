@@ -14,15 +14,24 @@ const SETTINGS = new URL('../assets/icons/settings.svg', import.meta.url).href;
 const TAG = new URL('../assets/icons/tag.svg', import.meta.url).href;
 
 type Place = 'inbox' | 'assigned' | 'waiting' | 'resolved' | 'settings';
+type Counted = 'inbox' | 'assigned' | 'waiting' | 'orders' | 'classes' | 'wholesale';
+
+/** How many open conversations each place and view has, as the inbox's list has them. */
+const COUNTS: Record<Counted, number> = { inbox: 4, assigned: 2, waiting: 1, orders: 2, classes: 1, wholesale: 1 };
 
 /**
  * Harbor around a screen: the sidebar from a tablet up, and the tab
  * bar on a phone. `current` is the place the screen is, which the
  * sidebar and the tab bar show as selected; the screen goes inside.
+ * `counts` is how many open conversations each place and view has, where
+ * the screen's differ from the inbox's (none when all are resolved).
  * `navRef` hears the places' node, for a tour to point at.
  */
-export function AppShell(inputs: Inputs<{ current: Place; navRef?: (node: UiNode | null) => void; children?: UiChild }>): UiChild {
+export function AppShell(
+  inputs: Inputs<{ current: Place; counts?: Partial<Record<Counted, number>>; navRef?: (node: UiNode | null) => void; children?: UiChild }>
+): UiChild {
   const at = (place: Place) => inputs.current.pipe(map(current => current === place));
+  const count = (counted: Counted) => inputs.counts.pipe(map(counts => (counts?.[counted] ?? COUNTS[counted]) || undefined));
   const nav = (node: UiNode | null) => inputs.navRef.emit(node);
   const content = (
     <column flex={1} minWidth={0} minHeight={0} backgroundColor="background">
@@ -43,16 +52,16 @@ export function AppShell(inputs: Inputs<{ current: Place; navRef?: (node: UiNode
             </column>
           </row>
           <column ref={nav} gap={2}>
-            <NavItem label="Inbox" icon={INBOX} count={4} selected={at('inbox')} />
-            <NavItem label="Assigned to me" icon={ASSIGNED} count={2} selected={at('assigned')} />
-            <NavItem label="Waiting" icon={WAITING} count={3} selected={at('waiting')} />
+            <NavItem label="Inbox" icon={INBOX} count={count('inbox')} selected={at('inbox')} />
+            <NavItem label="Assigned to me" icon={ASSIGNED} count={count('assigned')} selected={at('assigned')} />
+            <NavItem label="Waiting" icon={WAITING} count={count('waiting')} selected={at('waiting')} />
             <NavItem label="Resolved" icon={RESOLVED} selected={at('resolved')} />
           </column>
           <column gap={2}>
             <text text="Views" textStyle="overline" color="textMuted" paddingX={8} paddingBottom={4} />
-            <NavItem label="Orders" icon={TAG} count={3} />
-            <NavItem label="Classes" icon={TAG} count={1} />
-            <NavItem label="Wholesale" icon={TAG} count={1} />
+            <NavItem label="Orders" icon={TAG} count={count('orders')} />
+            <NavItem label="Classes" icon={TAG} count={count('classes')} />
+            <NavItem label="Wholesale" icon={TAG} count={count('wholesale')} />
           </column>
           <column flex={1} />
           <NavItem label="Settings" icon={SETTINGS} selected={at('settings')} />

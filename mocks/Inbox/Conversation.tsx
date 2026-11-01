@@ -26,6 +26,7 @@ const ORDER = new URL('../../assets/icons/package.svg', import.meta.url).href;
  */
 export function Conversation(_inputs: unknown, ctx: ComponentContext) {
   const reply = sharedValue(ctx, 'reply', '');
+  const resolved = sharedValue(ctx, 'resolved', '');
   const name = sharedValue(ctx, 'ConversationRow.name', 'Maya Ferreira');
   const subject = sharedValue(ctx, 'ConversationRow.subject', 'Order #4821 arrived with a chipped rim');
   const time = sharedValue(ctx, 'ConversationRow.time', '9:41 AM');
@@ -44,7 +45,7 @@ export function Conversation(_inputs: unknown, ctx: ComponentContext) {
           <text text={subject} textStyle="title" maxLines={2} textOverflow="ellipsis" />
           <text text={who} textStyle="bodySmall" color="textMuted" maxLines={1} textOverflow="ellipsis" />
         </column>
-        <ResolveButton customer={name} iconOnly={withBack} />
+        <ResolveButton customer={name} iconOnly={withBack} onResolve={() => resolved.next(name.value)} />
       </row>
       <row gap={8} y="center" paddingX={16} paddingBottom={12}>
         <AssignMenu defaultValue="Sam Okoro" />

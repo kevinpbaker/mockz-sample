@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 
 import { percent, type UiChild } from 'gesso-core';
 import { ScrollArea } from 'gesso-components';
@@ -11,22 +11,29 @@ import { SearchField } from './SearchField';
 
 const NEW = new URL('../assets/icons/mail.svg', import.meta.url).href;
 
+/** The customers whose conversations are open, of the six. */
+const OPEN = ['Maya Ferreira', 'Theo Lindqvist', 'Priya Raman', 'Jonah Adeyemi'];
+
 /**
  * The inbox's list: its header, search, and every conversation, newest
  * first. The inbox draws it alone on a phone and a tablet, and beside
  * the open conversation on a desktop. `selected` is the customer whose
- * conversation is open, which shows as read. `compact` draws each
+ * conversation is open, which shows as read. `resolved` is the customer
+ * whose conversation was just resolved. `compact` draws each
  * conversation on one line.
  */
-export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean }>): UiChild {
+export function InboxList(inputs: Inputs<{ selected?: string; resolved?: string; compact?: boolean }>): UiChild {
   const open = (name: string) => inputs.selected.pipe(map(selected => selected === name));
-  // A new conversation, once open, is read and someone is on it.
-  const newUntilOpen = (name: string) => open(name).pipe(map(opened => (opened ? ('open' as const) : ('new' as const))));
-  const unreadUntilOpen = (name: string) => open(name).pipe(map(opened => !opened));
+  const resolved = (name: string) => inputs.resolved.pipe(map(done => done === name));
+  // A new conversation, once open, is read and someone is on it; once resolved, it is resolved.
+  const statusOf = (name: string, was: 'new' | 'open' | 'waiting') =>
+    combineLatest([open(name), resolved(name)]).pipe(map(([opened, done]): 'new' | 'open' | 'waiting' | 'resolved' => (done ? 'resolved' : was === 'new' && opened ? 'open' : was)));
+  const unreadUntilOpen = (name: string) => combineLatest([open(name), resolved(name)]).pipe(map(([opened, done]) => !opened && !done));
+  const subtitle = inputs.resolved.pipe(map(done => `6 conversations, ${OPEN.includes(done ?? '') ? 3 : 4} open`));
   return (
     <column width={percent(100)} height={percent(100)}>
       <column gap={16} paddingX={16} paddingTop={24} paddingBottom={8}>
-        <PageHeader title="Inbox" subtitle="6 conversations, 4 open" action={<Button label="New" icon={NEW} size="small" />} />
+        <PageHeader title="Inbox" subtitle={subtitle} action={<Button label="New" icon={NEW} size="small" />} />
         <SearchField placeholder="Search conversations" />
       </column>
       <ScrollArea width={percent(100)} flex={1} minHeight={0} paddingX={8} paddingY={8}>
@@ -36,7 +43,7 @@ export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean 
             subject="Order #4821 arrived with a chipped rim"
             preview="The speckled mug has a small chip on the rim. Can you send a new one?"
             time="9:41 AM"
-            status={newUntilOpen('Maya Ferreira')}
+            status={statusOf('Maya Ferreira', 'new')}
             tag="Orders"
             unread={unreadUntilOpen('Maya Ferreira')}
             compact={inputs.compact}
@@ -47,7 +54,7 @@ export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean 
             subject="Move my Saturday wheel class"
             preview="I cannot come to the 10:00 class on the 14th. Is there space at 14:00?"
             time="9:12 AM"
-            status={newUntilOpen('Theo Lindqvist')}
+            status={statusOf('Theo Lindqvist', 'new')}
             tag="Classes"
             unread={unreadUntilOpen('Theo Lindqvist')}
             compact={inputs.compact}
@@ -58,7 +65,7 @@ export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean 
             subject="Wholesale price for 40 bowls"
             preview="We open a café in March and we like your Fog glaze a lot."
             time="Yesterday"
-            status="open"
+            status={statusOf('Priya Raman', 'open')}
             tag="Wholesale"
             compact={inputs.compact}
             selected={open('Priya Raman')}
@@ -68,7 +75,7 @@ export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean 
             subject="Gift card code does not work"
             preview="Thanks, I will try the new code tonight and tell you."
             time="Yesterday"
-            status="waiting"
+            status={statusOf('Jonah Adeyemi', 'waiting')}
             tag="Orders"
             compact={inputs.compact}
             selected={open('Jonah Adeyemi')}

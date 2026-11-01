@@ -12,7 +12,7 @@ const DONE = new URL('../../assets/icons/circle-check.svg', import.meta.url).hre
 /** The inbox when every conversation is resolved. */
 export function Inbox() {
   return (
-    <AppShell current="inbox">
+    <AppShell current="inbox" counts={{ inbox: 0, assigned: 0, waiting: 0, orders: 0, classes: 0, wholesale: 0 }}>
       <column width={percent(100)} height={percent(100)}>
         <column gap={16} paddingX={16} paddingTop={24} paddingBottom={8} maxWidth={720}>
           <PageHeader title="Inbox" subtitle="No open conversations" action={<Button label="New" icon={NEW} size="small" />} />

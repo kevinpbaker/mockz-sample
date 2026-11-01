@@ -13,7 +13,8 @@ as Gesso TSX, which is code your developers can read.
 
 - **In your browser:** open
   [design.mockz.app/?repo=kevinpbaker/mockz-sample](https://design.mockz.app/?repo=kevinpbaker/mockz-sample).
-  You do not need an account to look.
+  You do not need an account to look. To start in Play, open
+  [Reply to a customer](https://design.mockz.app/?repo=kevinpbaker/mockz-sample&play=Reply%20to%20a%20customer).
 - **In the Mac app:** clone this repository, then choose
   File › Open Project… and select the folder.
 
@@ -29,6 +30,8 @@ as Gesso TSX, which is code your developers can read.
    screen shows what you wrote. The back arrow and the tab bar work
    too. Then play Start a conversation and type a name with no `@` in
    To: Send takes you back with an error. Correct it, and Send goes on.
+   Last, play Resolve a conversation: the inbox you come back to shows
+   it resolved, and the counts in the sidebar go down.
 2. **Open the menus.** In Play, press Sam Okoro to assign the
    conversation, or Mark resolved to see the dialog. On the board, the
    `assigning` and `resolving` states show them open.
@@ -52,7 +55,7 @@ as Gesso TSX, which is code your developers can read.
 | `theme.ts` | The design system: colors (light and dark), the type scale in Inter, radii, shadows, control sizes for a mouse and a finger, and the timing of motion. |
 | `fonts/` | Inter, in four weights. |
 | `components/` | The parts the screens are made of. Each `.examples.tsx` file gives a component's states for the Components page. |
-| `mocks/Inbox/` | The inbox (empty, and on tour), a conversation (assigning, resolving, after a reply), a new conversation (with an error, and sent), and the two flows that connect them (`flows.ts`). |
+| `mocks/Inbox/` | The inbox (empty, and on tour), a conversation (assigning, resolving, after a reply), a new conversation (with an error, and sent), and the three flows that connect them (`flows.ts`). |
 | `mocks/Settings.tsx` | Your profile, notifications and assignment settings. |
 | `variations/Inbox/` | A direction for the inbox, `compact`. |
 | `.mockz/` | The team's statuses, notes and comments. Mockz keeps them in the repository, so they travel with the design. |
