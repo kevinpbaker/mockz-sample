@@ -1,0 +1,8 @@
+# What Mockz keeps on one machine, out of the design's versions.
+workbench/
+.mockz/requests/
+.mockz/snapshots/
+.mockz/versions/
+.mockz/presence/
+.mcp.json
+.claude/settings.local.json
