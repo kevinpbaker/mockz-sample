@@ -7,8 +7,8 @@
   "screen": "Conversation",
   "anchor": {
     "owners": [
-      "mocks/Inbox/Conversation.tsx:69:5",
-      "mocks/Inbox/Conversation.tsx:64:9",
+      "mocks/Inbox/Conversation.tsx:99:5",
+      "mocks/Inbox/Conversation.tsx:94:9",
       "components/ReplyBox.tsx:36:9"
     ],
     "source": "components/Button.tsx:53:9",

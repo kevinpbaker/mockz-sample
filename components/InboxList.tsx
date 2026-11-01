@@ -20,6 +20,9 @@ const NEW = new URL('../assets/icons/mail.svg', import.meta.url).href;
  */
 export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean }>): UiChild {
   const open = (name: string) => inputs.selected.pipe(map(selected => selected === name));
+  // A new conversation, once open, is read and someone is on it.
+  const newUntilOpen = (name: string) => open(name).pipe(map(opened => (opened ? ('open' as const) : ('new' as const))));
+  const unreadUntilOpen = (name: string) => open(name).pipe(map(opened => !opened));
   return (
     <column width={percent(100)} height={percent(100)}>
       <column gap={16} paddingX={16} paddingTop={24} paddingBottom={8}>
@@ -33,9 +36,9 @@ export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean 
             subject="Order #4821 arrived with a chipped rim"
             preview="The speckled mug has a small chip on the rim. Can you send a new one?"
             time="9:41 AM"
-            status={open('Maya Ferreira').pipe(map(opened => (opened ? ('open' as const) : ('new' as const))))}
+            status={newUntilOpen('Maya Ferreira')}
             tag="Orders"
-            unread={open('Maya Ferreira').pipe(map(opened => !opened))}
+            unread={unreadUntilOpen('Maya Ferreira')}
             compact={inputs.compact}
             selected={open('Maya Ferreira')}
           />
@@ -44,9 +47,9 @@ export function InboxList(inputs: Inputs<{ selected?: string; compact?: boolean 
             subject="Move my Saturday wheel class"
             preview="I cannot come to the 10:00 class on the 14th. Is there space at 14:00?"
             time="9:12 AM"
-            status="new"
+            status={newUntilOpen('Theo Lindqvist')}
             tag="Classes"
-            unread={true}
+            unread={unreadUntilOpen('Theo Lindqvist')}
             compact={inputs.compact}
             selected={open('Theo Lindqvist')}
           />

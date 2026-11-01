@@ -9,7 +9,8 @@ export const flows = [
   {
     name: 'Reply to a customer',
     steps: [
-      { screen: Inbox, label: 'Order #4821 arrived with a chipped rim' },
+      // Any conversation in the list opens it: the row pressed is what the conversation shows.
+      { screen: Inbox, press: 'ConversationRow' },
       { screen: Conversation, label: 'Send' },
       { screen: Sent }
     ]
@@ -22,9 +23,19 @@ export const flows = [
         screen: Compose,
         label: 'Send',
         // What was typed in To decides where Send goes: back with an error, or on.
-        branches: [{ name: 'not an email', when: (values: Record<string, unknown>) => !String(values.to ?? '').includes('@'), to: NotAnEmail }]
+        branches: [{ name: 'not an email', when: { value: 'to', is: 'not an email' }, to: NotAnEmail }]
       },
       { screen: ComposeSent }
+    ]
+  },
+  {
+    name: 'Resolve a conversation',
+    steps: [
+      { screen: Inbox, press: 'ConversationRow' },
+      { screen: Conversation, label: 'Mark resolved' },
+      // The same screen with its dialog open: a step's inputs, not a state of its own.
+      { screen: Conversation, label: 'Resolve', inputs: { ResolveButton: { open: true } } },
+      { screen: Inbox }
     ]
   }
 ];

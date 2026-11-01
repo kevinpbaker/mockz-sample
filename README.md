@@ -2,7 +2,7 @@
 
 A sample design for [Mockz](https://design.mockz.app): **Harbor**, a shared
 inbox for the support team of Juniper Ceramics, a small pottery shop. It
-has four screens with eight states, two flows, a direction and nineteen
+has four screens with eight states, three flows, a direction and nineteen
 components, in light and dark, at phone, tablet and desktop size. The
 team's notes, comments and statuses come with it. Everything is written
 as Gesso TSX, which is code your developers can read.
@@ -24,10 +24,11 @@ as Gesso TSX, which is code your developers can read.
 ## Try this first
 
 1. **Play the flows.** In the screens tree, open Inbox › Reply to a
-   customer and press Play. Open Maya's conversation, write a reply and
-   press Send: the next screen shows what you wrote. Then play Start a
-   conversation and type a name with no `@` in To: Send takes you back
-   with an error. Correct it, and Send goes on.
+   customer and press Play. Open any conversation: the next screen
+   shows the one you pressed. Write a reply and press Send: the next
+   screen shows what you wrote. The back arrow and the tab bar work
+   too. Then play Start a conversation and type a name with no `@` in
+   To: Send takes you back with an error. Correct it, and Send goes on.
 2. **Open the menus.** In Play, press Sam Okoro to assign the
    conversation, or Mark resolved to see the dialog. On the board, the
    `assigning` and `resolving` states show them open.
@@ -108,7 +109,11 @@ Use this sample as a model for your own design:
   on the board and in Play.
 - **Values a flow carries.** The reply and the To address are shared
   values (`sharedValue`), so a later screen shows what was typed, and a
-  flow can branch on it.
+  flow can branch on it (`when: { value: 'to', is: 'not an email' }`).
+- **Flows that read like the product.** A step taken by any row names
+  the component (`press: 'ConversationRow'`), and the row's inputs are
+  values the conversation shows. A step can start its screen from
+  inputs (the Resolve dialog open) instead of a state file of its own.
 
 All the people, the shop and the text in this design are made up.
 Inter is under the [SIL Open Font License](fonts/Inter/OFL.txt), and
